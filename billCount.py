@@ -1,4 +1,4 @@
-price = int(input("Enter the price: "), 10)
+price = int(input("How much do you need?: "), 10)
 
 ones = price % 5;
 fives = (price - ones)/5
