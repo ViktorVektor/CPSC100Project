@@ -5,3 +5,6 @@ pygame.init()
 
 # draw screen
 screen = pygame.display.set_mode((800,600))
+
+while True:
+    pass
