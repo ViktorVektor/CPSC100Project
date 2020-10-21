@@ -1,0 +1,7 @@
+import pygame
+
+# Must initialize pygame upon starting a game
+pygame.init()
+
+# draw screen
+screen = pygame.display.set_mode((800,600))
