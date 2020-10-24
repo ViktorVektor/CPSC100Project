@@ -1,12 +1,12 @@
 import pygame
-import main
+#import main
 import time
 
 playerX = 0
 playerY = 0
 playerName = 0
 
-from main import playerImg
+#from main import playerImg
 def a():
     #pygame.screen.fill((255, 255, 255))
     print("help lol")
