@@ -1,0 +1,9 @@
+UI;
+    - exit out anytime
+    - SVG (maybe?)
+    - only use main file right now, then compartmentalize into different files
+
+player_main
+    - move player sprite definitions into a function (size, image)
+    - move screen drawing into function so that blit(player_main.player1) is all you need
+    - move boundary check into a function
