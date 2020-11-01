@@ -1,7 +1,9 @@
 import pygame
 import math
-
 import time
+
+#from player_main import entity_init, move, position
+
 
 # Must initialize pygame upon starting a game
 pygame.init()
@@ -33,6 +35,7 @@ playerHeight = int(mapHeight/35)*5
 
 playerImg = pygame.transform.scale(playerImg, (playerWidth, playerHeight))
 
+# spawn point
 playerX = int(mapImg.get_rect().size[0]/2) # place at the centre
 playerDX = 0
 
@@ -98,6 +101,47 @@ def distance(aX, aY, aWidth, aHeight, bX, bY, bWidth, bHeight):
 
 # Main Game Loop
 running = True
+
+
+position = [0, 0]
+entityName = ""
+entityX = 0
+entityY = 0
+eS = 2
+
+
+# entityDX, entityDY, entitySpeed
+def entity_init(entity, eX, eY, speed):
+    position[0] = eX
+    position[1] = eY
+    eS = speed
+
+
+def movePlayer(eventGet):
+    position[0] = playerX
+    position[1] = playerY
+    # if key down
+    if eventGet.type == pygame.KEYDOWN:
+        if eventGet.key == pygame.K_d:
+            playerDX += e
+            S
+            print("Right")
+        if eventGet.key == pygame.K_a:
+            playerDX += -eS
+            print("Left")
+        if eventGet.key == pygame.K_w:
+            playerDY += -eS
+            print("Up")
+        if eventGet.key == pygame.K_s:
+            playerDY += eS
+            print("Down")
+    position[0] += playerDX
+    position[1] += playerDY
+    print(position[0])
+    print(position[1])
+
+entity_init(playerImg, 0, 0, 2)
+
 while running:
     # screen.blit(playerImg, (playerX, playerY))
     map(0, 0)
@@ -107,32 +151,33 @@ while running:
         if event.type == pygame.QUIT:  # Pressing the windows close button
             running = False
 
+        movePlayer(event)
         # if key down
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_d:
-                playerDX = playerSpeed
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_a:
-                playerDX = -playerSpeed
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_w:
-                playerDY = -playerSpeed
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_s:
-                playerDY = playerSpeed
-        # if key up
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_d:
-                playerDX = 0
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_a:
-                playerDX = 0
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_w:
-                playerDY = 0
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_s:
-                playerDY = 0
+        #if event.type == pygame.KEYDOWN:
+        #    if event.key == pygame.K_d:
+        #        playerDX = playerSpeed
+        #if event.type == pygame.KEYDOWN:
+        #    if event.key == pygame.K_a:
+        #       playerDX = -playerSpeed
+        #if event.type == pygame.KEYDOWN:
+        #    if event.key == pygame.K_w:
+        #       playerDY = -playerSpeed
+        #if event.type == pygame.KEYDOWN:
+        #    if event.key == pygame.K_s:
+        #        playerDY = playerSpeed
+        ## if key upsd
+        #if event.type == pygame.KEYUP:w
+        #    if event.key == pygame.K_d:
+        #       playerDX = 0
+        #if event.type == pygame.KEYUP:
+        #   if event.key == pygame.K_a:
+        #        playerDX = 0
+        #f event.type == pygame.KEYUP:
+        #   if event.key == pygame.K_w:
+        #       playerDY = 0
+        #if event.type == pygame.KEYUP:
+        #    if event.key == pygame.K_s:
+        #        playerDY = 0
 
         # enemy movement
         # if key down
@@ -162,8 +207,8 @@ while running:
             if event.key == pygame.K_DOWN:
                 enemyDY = 0
 
-    playerX += playerDX
-    playerY += playerDY
+    #playerX += playerDX
+    #playerY += playerDY
 
     # collision detection with enemy
     # if the distance between the two objects is zero, then they have collided
@@ -218,7 +263,7 @@ while running:
 
     enemyX += enemyDX
     enemyY += enemyDY
-    player(playerX, playerY)
+    map(playerX, playerY)
     enemy(enemyX, enemyY)
 
     pygame.display.update()
