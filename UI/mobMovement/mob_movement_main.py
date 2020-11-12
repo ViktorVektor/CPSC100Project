@@ -1,11 +1,11 @@
 import pygame
-from settings import MOB_IMG, MOB_SPEED
-from main import position
+
+#from main import position
 
 class Mob(pygame.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.wobs
-        pg.sprite.Sprite.__init__(self,self.groups)
+        pygame.sprite.Sprite.__init__(self,self.groups)
         self.image = MOB_IMG
         self.rect = self.image.get_rect()
         self.pos = vec(x,y) * [INSERT_BY_LOCATION]

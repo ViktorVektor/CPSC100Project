@@ -1,0 +1,67 @@
+def distance(aX, aY, aWidth, aHeight, bX, bY, bWidth, bHeight):
+
+    boundary_distance = [0, 0, 0, 0]
+
+    a_top = aY
+    a_bottom = aY + int(aHeight)
+    a_left = aX
+    a_right = aX + int(aWidth)
+
+    b_top = bY
+    b_bottom = bY + int(bHeight)
+    b_left = bX
+    b_right = bX + int(bWidth)
+
+    boundary_distance[0] = math.fabs(a_top - b_bottom)
+    boundary_distance[1] = math.fabs(a_bottom - b_top)
+    boundary_distance[2] = math.fabs(a_left - b_right)
+    boundary_distance[3] = math.fabs(a_right - b_left)
+
+    return boundary_distance
+
+def collision():
+    top_bottom_distance = \
+        distance(playerX, playerY, playerWidth, playerHeight, enemyX, enemyY, enemyWidth, enemyHeight)[0]
+    bottom_top_distance = \
+        distance(playerX, playerY, playerWidth, playerHeight, enemyX, enemyY, enemyWidth, enemyHeight)[1]
+    left_right_distance = \
+        distance(playerX, playerY, playerWidth, playerHeight, enemyX, enemyY, enemyWidth, enemyHeight)[2]
+    right_left_distance = \
+        distance(playerX, playerY, playerWidth, playerHeight, enemyX, enemyY, enemyWidth, enemyHeight)[3]
+
+    # if player top and enemy bottom are touching
+    # needs the extra left and right side conditions so it only stops within the width of the enemy
+    # THINGS KEEP CLIPPING AND I DON'T KNOW WHY AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 2020 10 30
+    if (top_bottom_distance <= 2) \
+            and (left_right_distance - enemyWidth <= enemyWidth + 12) \
+            and (right_left_distance - enemyWidth <= enemyWidth + 12):
+        playerY -= playerDY
+        enemyY -= enemyDY
+    # if player bottom and enemy top
+    if (bottom_top_distance <= 2) \
+            and (left_right_distance - enemyWidth <= enemyWidth + 12) \
+            and (right_left_distance - enemyWidth <= enemyWidth + 12):
+        playerY -= playerDY
+        enemyY -= enemyDY
+    # if player left and enemy right
+    if (left_right_distance <= 2) \
+            and (top_bottom_distance - enemyHeight <= enemyWidth) \
+            and (bottom_top_distance - enemyHeight <= enemyWidth):
+        playerX -= playerDX
+        enemyX -= enemyDX
+    # if player right and enemy left
+    if (right_left_distance <= 2) \
+            and (top_bottom_distance - enemyHeight <= enemyWidth) \
+            and (bottom_top_distance - enemyHeight <= enemyWidth):
+        playerX -= playerDX
+        enemyX -= enemyDX
+
+    # boundary check
+    if playerX <= 0:
+        playerX = 0
+    elif (playerX + playerWidth) >= mapWidth:
+        playerX = mapWidth - playerWidth
+    if playerY <= 0:
+        playerY = 0
+    elif (playerY + playerHeight) >= mapHeight:
+        playerY = mapHeight - playerHeight
