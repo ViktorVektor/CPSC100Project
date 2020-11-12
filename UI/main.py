@@ -1,5 +1,6 @@
 import pygame
 import math
+from mob_movement_main import Mob
 
 import time
 
@@ -156,6 +157,9 @@ while running:
         if event.type == pygame.QUIT:  # Pressing the windows close button
             running = False
 
+        position[0] = playerX
+        position[1] = playerY
+
         #movePlayer(event)
         #if key down
         if event.type == pygame.KEYDOWN:
@@ -212,8 +216,8 @@ while running:
             if event.key == pygame.K_DOWN:
                 enemyDY = 0
 
-    #playerX += playerDX
-    #playerY += playerDY
+    playerX += playerDX
+    playerY += playerDY
 
     # collision detection with enemy
     # if the distance between the two objects is zero, then they have collided
@@ -268,7 +272,8 @@ while running:
 
     enemyX += enemyDX
     enemyY += enemyDY
-    player(playerX, playerY)
+    #player(playerX, playerY)
+    Mob(playerImg)
     enemy(enemyX, enemyY)
 
     pygame.display.update()

@@ -4,14 +4,14 @@ class Mob(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self,self.groups)
         self.image = MOB_IMG
         self.rect = self.image.get_rect()
-        self.pos = vec(x,y) * [INSERT BY LOCATION]
+        self.pos = vec(x,y) * [INSERT_BY_LOCATION]
         self.vel = vec(0, 0)
         self.acc = vec(0, 0)
         self.rect.centre = self.pos
         self.rot = 0
 
     def update(self):
-        self.rot = (self.game.player.pos - self.pos).angle_to(vec(1,0)
+        self.rot = (self.game.player.pos - self.pos.angle_to(vec(1,0)))
         self.image = pg.transform.rotate(self.game.mob_img,self.rot)
         self.rect = self.image.get_rect()
         self.rect.center = self.pos

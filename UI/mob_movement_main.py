@@ -1,4 +1,8 @@
-class Mob(pg.sprite.Sprite):
+import pygame
+from settings import MOB_IMG, MOB_SPEED
+from main import position
+
+class Mob(pygame.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.wobs
         pg.sprite.Sprite.__init__(self,self.groups)
@@ -18,5 +22,5 @@ class Mob(pg.sprite.Sprite):
         self.acc = vec(MOB_SPEED, 0).rotate(-self.rot)
         self.acc +=self.vel * -1
         self.vel += self.acc * self.game.dt
-        self.pos += slef.vel *self.game.dt + 0.5 * self.acc * self.game.dt ** 2
+        self.pos += self.vel *self.game.dt + 0.5 * self.acc * self.game.dt ** 2
         self.rect.center = self.pos
