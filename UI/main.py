@@ -1,5 +1,6 @@
 import pygame
 import math
+
 import time
 
 #from player_main import entity_init, move, position
@@ -102,7 +103,6 @@ def distance(aX, aY, aWidth, aHeight, bX, bY, bWidth, bHeight):
 # Main Game Loop
 running = True
 
-
 position = [0, 0]
 entityName = ""
 entityX = 0
@@ -118,13 +118,18 @@ def entity_init(entity, eX, eY, speed):
 
 
 def movePlayer(eventGet):
+    playerX = int(mapImg.get_rect().size[0] / 2)  # place at the centre
+    playerDX = 0
+
+    playerY = int(mapImg.get_rect().size[1] / 2)
+    playerDY = 0
+
     position[0] = playerX
     position[1] = playerY
     # if key down
     if eventGet.type == pygame.KEYDOWN:
         if eventGet.key == pygame.K_d:
-            playerDX += e
-            S
+            playerDX += eS
             print("Right")
         if eventGet.key == pygame.K_a:
             playerDX += -eS
@@ -151,33 +156,33 @@ while running:
         if event.type == pygame.QUIT:  # Pressing the windows close button
             running = False
 
-        movePlayer(event)
-        # if key down
-        #if event.type == pygame.KEYDOWN:
-        #    if event.key == pygame.K_d:
-        #        playerDX = playerSpeed
-        #if event.type == pygame.KEYDOWN:
-        #    if event.key == pygame.K_a:
-        #       playerDX = -playerSpeed
-        #if event.type == pygame.KEYDOWN:
-        #    if event.key == pygame.K_w:
-        #       playerDY = -playerSpeed
-        #if event.type == pygame.KEYDOWN:
-        #    if event.key == pygame.K_s:
-        #        playerDY = playerSpeed
-        ## if key upsd
-        #if event.type == pygame.KEYUP:w
-        #    if event.key == pygame.K_d:
-        #       playerDX = 0
-        #if event.type == pygame.KEYUP:
-        #   if event.key == pygame.K_a:
-        #        playerDX = 0
-        #f event.type == pygame.KEYUP:
-        #   if event.key == pygame.K_w:
-        #       playerDY = 0
-        #if event.type == pygame.KEYUP:
-        #    if event.key == pygame.K_s:
-        #        playerDY = 0
+        #movePlayer(event)
+        #if key down
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_d:
+                playerDX = playerSpeed
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_a:
+               playerDX = -playerSpeed
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_w:
+               playerDY = -playerSpeed
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_s:
+                playerDY = playerSpeed
+        # if key upsd
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_d:
+               playerDX = 0
+        if event.type == pygame.KEYUP:
+           if event.key == pygame.K_a:
+                playerDX = 0
+        if event.type == pygame.KEYUP:
+           if event.key == pygame.K_w:
+               playerDY = 0
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_s:
+                playerDY = 0
 
         # enemy movement
         # if key down
@@ -263,7 +268,7 @@ while running:
 
     enemyX += enemyDX
     enemyY += enemyDY
-    map(playerX, playerY)
+    player(playerX, playerY)
     enemy(enemyX, enemyY)
 
     pygame.display.update()

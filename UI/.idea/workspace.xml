@@ -19,7 +19,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="971f0ee1-8851-4bbf-9b8a-3b45d5283f41" name="Default Changelist" comment="" />
+    <list default="true" id="971f0ee1-8851-4bbf-9b8a-3b45d5283f41" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../Mob movement/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -54,6 +58,48 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.main">
+    <configuration name="Mob_movement (No collision)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="UI" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../Mob movement" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../Mob movement/Mob_movement (No collision).py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="UI" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../Mob movement" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../Mob movement/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" activateToolWindowBeforeRun="false" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -99,6 +145,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.main (1)" />
+        <item itemvalue="Python.Mob_movement (No collision)" />
         <item itemvalue="Python.player_movement" />
       </list>
     </recent_temporary>
@@ -139,22 +187,22 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="1061" y="443" key="FileChooserDialogImpl/0.0.2560.1400/3840.218.1080.1880@0.0.2560.1400" timestamp="1603323661594" />
-    <state width="2539" height="181" key="GridCell.Tab.0.bottom" timestamp="1604205753124">
+    <state width="2539" height="181" key="GridCell.Tab.0.bottom" timestamp="1605147361446">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2539" height="181" key="GridCell.Tab.0.bottom/0.0.2560.1400/3840.218.1080.1880@0.0.2560.1400" timestamp="1604205753124" />
-    <state width="2539" height="181" key="GridCell.Tab.0.center" timestamp="1604205753124">
+    <state width="2539" height="181" key="GridCell.Tab.0.bottom/0.0.2560.1400/3840.218.1080.1880@0.0.2560.1400" timestamp="1605147361446" />
+    <state width="2539" height="181" key="GridCell.Tab.0.center" timestamp="1605147361446">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2539" height="181" key="GridCell.Tab.0.center/0.0.2560.1400/3840.218.1080.1880@0.0.2560.1400" timestamp="1604205753124" />
-    <state width="2539" height="181" key="GridCell.Tab.0.left" timestamp="1604205753124">
+    <state width="2539" height="181" key="GridCell.Tab.0.center/0.0.2560.1400/3840.218.1080.1880@0.0.2560.1400" timestamp="1605147361446" />
+    <state width="2539" height="181" key="GridCell.Tab.0.left" timestamp="1605147361446">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2539" height="181" key="GridCell.Tab.0.left/0.0.2560.1400/3840.218.1080.1880@0.0.2560.1400" timestamp="1604205753124" />
-    <state width="2539" height="181" key="GridCell.Tab.0.right" timestamp="1604205753124">
+    <state width="2539" height="181" key="GridCell.Tab.0.left/0.0.2560.1400/3840.218.1080.1880@0.0.2560.1400" timestamp="1605147361446" />
+    <state width="2539" height="181" key="GridCell.Tab.0.right" timestamp="1605147361446">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2539" height="181" key="GridCell.Tab.0.right/0.0.2560.1400/3840.218.1080.1880@0.0.2560.1400" timestamp="1604205753124" />
+    <state width="2539" height="181" key="GridCell.Tab.0.right/0.0.2560.1400/3840.218.1080.1880@0.0.2560.1400" timestamp="1605147361446" />
     <state width="2539" height="492" key="GridCell.Tab.1.bottom" timestamp="1603327980974">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
