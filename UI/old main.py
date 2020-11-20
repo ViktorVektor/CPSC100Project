@@ -29,7 +29,7 @@ screen = pygame.display.set_mode(mapImg.get_rect().size, 0, 32)
 pygame.display.set_caption("meinkraft")
 
 # Icon
-iconImg = 'lorhead.png'
+iconImg = 'lorghead.png'
 icon = pygame.image.load('lorghead.png')
 pygame.display.set_icon(icon)
 
@@ -39,10 +39,10 @@ pygame.display.set_icon(icon)
 
 playerImg = icon
 
-playerWidth = int(mapWidth()/43)*5
+player_width() = int(mapWidth()/43)*5
 playerHeight = int(mapHeight()/35)*5
 
-playerImg = pygame.transform.scale(playerImg, (playerWidth, playerHeight))
+playerImg = pygame.transform.scale(playerImg, (player_width(), playerHeight))
 
 # spawn point
 playerX = int(mapImg.get_rect().size[0]/2) # place at the centre
@@ -101,10 +101,10 @@ class sprites(pygame.sprite.Sprite):
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, img, playerWidth, playerHeight):
+    def __init__(self, img, player_width, playerHeight):
         super().__init__()
         self.image = pygame.image.load(img)
-        self.size = pygame.transform.scale(self.image, (playerWidth, playerHeight))
+        self.size = pygame.transform.scale(self.image, (player_width(), playerHeight))
 
         self.rect = self.image.get_rect()
 
@@ -145,8 +145,8 @@ class Player(pygame.sprite.Sprite):
 
         if self.rect.x <= 0:
             self.rect.x = 0
-        elif (self.rect.x + playerWidth) >= mapWidth():
-            self.rect.x = mapWidth() - playerWidth
+        elif (self.rect.x + player_width()) >= mapWidth():
+            self.rect.x = mapWidth() - player_width()
         if self.rect.y <= 0:
             self.rect.y = 0
         elif (self.rect.y + playerHeight) >= mapHeight():
@@ -214,7 +214,7 @@ player = pygame.sprite.Group()
 
 
 normalSprite = sprites(WHITE, 500, 400)
-playerSprite = Player("lorghead.png", playerWidth, playerHeight)
+playerSprite = Player("lorghead.png", player_width(), playerHeight)
 
 all_sprites.add(normalSprite)
 player.add(playerSprite)

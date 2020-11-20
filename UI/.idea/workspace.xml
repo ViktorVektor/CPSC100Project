@@ -20,7 +20,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="971f0ee1-8851-4bbf-9b8a-3b45d5283f41" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/old main.py" beforeDir="false" afterPath="$PROJECT_DIR$/old main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/waste code" beforeDir="false" afterPath="$PROJECT_DIR$/waste code" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +48,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/old main.py" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
@@ -55,7 +58,7 @@
       <recent name="C:\Users\gabom\Documents\GitHub\CPSC100Project\player" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.old main">
+  <component name="RunManager" selected="Python.main">
     <configuration name="Mob_movement (No collision)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="UI" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -77,7 +80,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="UI" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\gabom\AppData\Local\Programs\Python\Python37\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="old main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="UI" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -85,11 +109,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../Mob movement" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../Mob movement/main.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/old main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -110,7 +134,7 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/old main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -140,10 +164,18 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Python.main" />
+      <item itemvalue="Python.Mob_movement (No collision)" />
+      <item itemvalue="Python.old main" />
+      <item itemvalue="Python.player_movement" />
+      <item itemvalue="Python.old main (1)" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main" />
+        <item itemvalue="Python.old main (1)" />
         <item itemvalue="Python.old main" />
-        <item itemvalue="Python.main (1)" />
         <item itemvalue="Python.Mob_movement (No collision)" />
         <item itemvalue="Python.player_movement" />
       </list>
@@ -173,33 +205,39 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="736" y="356" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1603320594454">
+    <state x="736" y="356" width="1089" height="737" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605851567026">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
+    <state x="736" y="356" width="1089" height="737" key="#com.intellij.execution.impl.EditConfigurationsDialog/-1080.69.1080.1860/3840.87.1080.1880/0.0.2560.1400@0.0.2560.1400" timestamp="1605851567026" />
     <state x="736" y="356" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2560.1400/3840.218.1080.1880@0.0.2560.1400" timestamp="1603320594454" />
     <state x="1034" y="503" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1605153089280">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="1034" y="503" key="#com.intellij.fileTypes.FileTypeChooser/0.0.2560.1400/3840.218.1080.1880@0.0.2560.1400" timestamp="1605153089280" />
-    <state x="1061" y="443" key="FileChooserDialogImpl" timestamp="1603323661594">
+    <state x="1061" y="443" key="FileChooserDialogImpl" timestamp="1605851565370">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
+    <state x="1061" y="443" key="FileChooserDialogImpl/-1080.69.1080.1860/3840.87.1080.1880/0.0.2560.1400@0.0.2560.1400" timestamp="1605851565370" />
     <state x="1061" y="443" key="FileChooserDialogImpl/0.0.2560.1400/3840.218.1080.1880@0.0.2560.1400" timestamp="1603323661594" />
-    <state width="2539" height="181" key="GridCell.Tab.0.bottom" timestamp="1605162906919">
+    <state width="2539" height="181" key="GridCell.Tab.0.bottom" timestamp="1605853033246">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
+    <state width="2539" height="181" key="GridCell.Tab.0.bottom/-1080.69.1080.1860/3840.87.1080.1880/0.0.2560.1400@0.0.2560.1400" timestamp="1605853033246" />
     <state width="2539" height="181" key="GridCell.Tab.0.bottom/0.0.2560.1400/3840.218.1080.1880@0.0.2560.1400" timestamp="1605162906919" />
-    <state width="2539" height="181" key="GridCell.Tab.0.center" timestamp="1605162906918">
+    <state width="2539" height="181" key="GridCell.Tab.0.center" timestamp="1605853033246">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
+    <state width="2539" height="181" key="GridCell.Tab.0.center/-1080.69.1080.1860/3840.87.1080.1880/0.0.2560.1400@0.0.2560.1400" timestamp="1605853033246" />
     <state width="2539" height="181" key="GridCell.Tab.0.center/0.0.2560.1400/3840.218.1080.1880@0.0.2560.1400" timestamp="1605162906918" />
-    <state width="2539" height="181" key="GridCell.Tab.0.left" timestamp="1605162906918">
+    <state width="2539" height="181" key="GridCell.Tab.0.left" timestamp="1605853033245">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
+    <state width="2539" height="181" key="GridCell.Tab.0.left/-1080.69.1080.1860/3840.87.1080.1880/0.0.2560.1400@0.0.2560.1400" timestamp="1605853033245" />
     <state width="2539" height="181" key="GridCell.Tab.0.left/0.0.2560.1400/3840.218.1080.1880@0.0.2560.1400" timestamp="1605162906918" />
-    <state width="2539" height="181" key="GridCell.Tab.0.right" timestamp="1605162906919">
+    <state width="2539" height="181" key="GridCell.Tab.0.right" timestamp="1605853033246">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
+    <state width="2539" height="181" key="GridCell.Tab.0.right/-1080.69.1080.1860/3840.87.1080.1880/0.0.2560.1400@0.0.2560.1400" timestamp="1605853033246" />
     <state width="2539" height="181" key="GridCell.Tab.0.right/0.0.2560.1400/3840.218.1080.1880@0.0.2560.1400" timestamp="1605162906919" />
     <state width="2539" height="492" key="GridCell.Tab.1.bottom" timestamp="1603327980974">
       <screen x="0" y="0" width="2560" height="1400" />
@@ -229,10 +267,14 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="1273" y="0" width="1293" height="1407" key="dock-window-1/0.0.2560.1400/3840.218.1080.1880@0.0.2560.1400" timestamp="1603322583001" />
-    <state x="943" y="315" width="672" height="678" key="search.everywhere.popup" timestamp="1605843910040">
+    <state x="987" y="256" width="587" height="888" key="find.popup" timestamp="1605847334338">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="943" y="315" width="672" height="678" key="search.everywhere.popup/-1080.69.1080.1860/3840.87.1080.1880/0.0.2560.1400@0.0.2560.1400" timestamp="1605843910040" />
+    <state x="987" y="256" width="587" height="888" key="find.popup/-1080.69.1080.1860/3840.87.1080.1880/0.0.2560.1400@0.0.2560.1400" timestamp="1605847334337" />
+    <state x="943" y="315" width="672" height="678" key="search.everywhere.popup" timestamp="1605850710207">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="943" y="315" width="672" height="678" key="search.everywhere.popup/-1080.69.1080.1860/3840.87.1080.1880/0.0.2560.1400@0.0.2560.1400" timestamp="1605850710207" />
     <state x="943" y="315" width="672" height="678" key="search.everywhere.popup/0.0.2560.1400/3840.218.1080.1880@0.0.2560.1400" timestamp="1605153529847" />
   </component>
 </project>

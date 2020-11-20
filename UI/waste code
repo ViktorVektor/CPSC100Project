@@ -21,13 +21,13 @@ def distance(aX, aY, aWidth, aHeight, bX, bY, bWidth, bHeight):
 
 def collision():
     top_bottom_distance = \
-        distance(playerX, playerY, playerWidth, playerHeight, enemyX, enemyY, enemyWidth, enemyHeight)[0]
+        distance(playerX, playerY, player_width(), playerHeight, enemyX, enemyY, enemyWidth, enemyHeight)[0]
     bottom_top_distance = \
-        distance(playerX, playerY, playerWidth, playerHeight, enemyX, enemyY, enemyWidth, enemyHeight)[1]
+        distance(playerX, playerY, player_width(), playerHeight, enemyX, enemyY, enemyWidth, enemyHeight)[1]
     left_right_distance = \
-        distance(playerX, playerY, playerWidth, playerHeight, enemyX, enemyY, enemyWidth, enemyHeight)[2]
+        distance(playerX, playerY, player_width(), playerHeight, enemyX, enemyY, enemyWidth, enemyHeight)[2]
     right_left_distance = \
-        distance(playerX, playerY, playerWidth, playerHeight, enemyX, enemyY, enemyWidth, enemyHeight)[3]
+        distance(playerX, playerY, player_width(), playerHeight, enemyX, enemyY, enemyWidth, enemyHeight)[3]
 
     # if player top and enemy bottom are touching
     # needs the extra left and right side conditions so it only stops within the width of the enemy
@@ -59,8 +59,8 @@ def collision():
     # boundary check
     if playerX <= 0:
         playerX = 0
-    elif (playerX + playerWidth) >= mapWidth:
-        playerX = mapWidth - playerWidth
+    elif (playerX + player_width()) >= mapWidth:
+        playerX = mapWidth - player_width()
     if playerY <= 0:
         playerY = 0
     elif (playerY + playerHeight) >= mapHeight:
