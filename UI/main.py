@@ -60,7 +60,9 @@ pygame.display.flip()
 # grab the player image from the main menu
 # from main_menu import player_img_name
 
-player_img = 'survivor-idle_knife_0.png'
+player_img_name = 'survivor-idle_knife_0.png'
+player_img = pygame.image.load(player_img_name)
+
 
 
 def player_width():
@@ -72,16 +74,74 @@ def player_height():
     height = int( player_img.get_rect().size[1]/(map_height()*2) )
     return height
 
+# movement properties
+# maybe grab difficulty multiplier here?
+player_speed = 1*3 # * difficulty
+
+# WASD inputs
+KEYS = {pygame.K_w : (0, 1),
+        pygame.K_a : (1, 0),
+        pygame.K_s : (0, -1),
+        pygame.K_d : (-1, 0)}
+
+
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load(player_img)
-        self.rect = pygame.transform.scale(screen, (player_width(), player_height()))
+        # variables for the class
+        self.image = pygame.image.load(player_img_name)
+        self.rect = self.image.get_rect()
+        self.image = pygame.transform.scale(player_img, (int(map_width() / 8), int(map_height() / 8)))
+        self.is_north = False
+        self.is_east = True
+        self.is_west = False
+        self.is_south = False
+
+    def update(self):
 
 
-# movement properties
-# maybe grab difficulty multiplier here?
-player_speed = 1*2 # * difficulty
+        # pos = pygame.mouse.get_pos()
+
+        # place the character at the center of the screen
+        self.rect.x = int(map_width()/2) - int(player_width()/2)
+        self.rect.y = int(map_height()/2) - int(player_height()/2)
+
+        if event.type == pygame.KEYDOWN:
+            # face up
+            if event.key == pygame.K_w:
+                if self.is_north:
+                    self.image = pygame.transform.rotate(self.image, 0)
+                if self.is_south:
+                    self.image = pygame.transform.rotate(self.image, 180)
+                if self.is_east:
+                    self.image = pygame.transform.rotate(self.image, 90)
+                if self.is_west:
+                    self.image = pygame.transform.rotate(self.image, -90)
+
+                self.is_north = True
+                self.is_east = False
+                self.is_west = False
+                self.is_south = False
+
+
+            #face down
+            if event.key == pygame.K_s:
+                if self.is_north:
+                    self.image = pygame.transform.rotate(self.image, 180)
+                if self.is_south:
+                    self.image = pygame.transform.rotate(self.image, 0)
+                if self.is_east:
+                    self.image = pygame.transform.rotate(self.image, -90)
+                if self.is_west:
+                    self.image = pygame.transform.rotate(self.image, 90)
+
+                self.is_north = False
+                self.is_east = False
+                self.is_west = False
+                self.is_south = True
+
+
+
 
 
 # initializes the map and its movement
@@ -91,54 +151,24 @@ class Map(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load(img)
         self.rect = self.image.get_rect()
-        # self.rect = pygame.transform.scale(screen, (map_width()*4, map_height()*4))
+        self.speed = player_speed
+        self.keys = pygame.key.get_pressed()
 
-    def update(self):
+    def update(self, keys):
+        self.image = pygame.transform.scale(map_img, (map_width() * 2, map_height() * 2))
         # movement
-        entitySpeed = [0, 0]
-        # if key down
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_d:
-                entitySpeed[0] = player_speed
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_a:
-                entitySpeed[0] = -player_speed
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_w:
-                entitySpeed[1] = -player_speed
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_s:
-                entitySpeed[1] = player_speed
-        # if key upsd
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_d:
-                entitySpeed[0] = 0
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_a:
-                entitySpeed[0] = 0
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_w:
-                entitySpeed[1] = 0
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_s:
-                entitySpeed[1] = 0
 
-        pos = pygame.mouse.get_pos()
+        # if the key being pressed is in the array of KEYS
+        for key in KEYS:
+            if keys[key]:
+                # take the value of the tuple and add it do the position
+                self.rect.x += KEYS[key][0]*self.speed
+                self.rect.y += KEYS[key][1]*self.speed
 
-        map_sprite.rect.x = pos[0]
-        map_sprite.rect.y = pos[1]
+       #self.rect.clamp_ip(map_img.get_rect())  # Keep player on screen.
 
-        if self.rect.x <= 0:
-            self.rect.x = 0
-        elif (self.rect.x + player_width()) >= map_width():
-            self.rect.x = map_width() - player_width()
-        if self.rect.y <= 0:
-            self.rect.y = 0
-        elif (self.rect.y + player_height()) >= map_height():
-            self.rect.y = map_height() - player_height()
 
-        self.rect.x += entitySpeed[0]
-        self.rect.y += entitySpeed[1]
+
 
 # function for determining player movement speed on a map
 # may not be needed if movement is in the map section
@@ -185,20 +215,26 @@ running = True
 
 # init sprites
 map_sprite.add(Map(map_img_name))
-
+player_sprite.add(Player())
 
 # adding sprites
 
 while running:
+    key_pressed = pygame.key.get_pressed()
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
 
-        screen.blit(pygame.image.load(player_img), (0, 0))
+
+        # screen.blit(pygame.image.load(player_img_name), (0, 0))
+        map_sprite.draw(screen)
         player_sprite.draw(screen)
 
-        clock.tick(60)
+        clock.tick(20)
+
+        map_sprite.update(key_pressed)
         player_sprite.update()
         pygame.display.update()
 
