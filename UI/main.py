@@ -97,15 +97,8 @@ class Player(pygame.sprite.Sprite):
         self.is_west = False
         self.is_south = False
 
-    def update(self):
 
-
-        # pos = pygame.mouse.get_pos()
-
-        # place the character at the center of the screen
-        self.rect.x = int(map_width()/2) - int(player_width()/2)
-        self.rect.y = int(map_height()/2) - int(player_height()/2)
-
+    def key_face(self):
         if event.type == pygame.KEYDOWN:
             # face up
             if event.key == pygame.K_w:
@@ -139,6 +132,65 @@ class Player(pygame.sprite.Sprite):
                 self.is_east = False
                 self.is_west = False
                 self.is_south = True
+
+            # face left
+            if event.key == pygame.K_a:
+                if self.is_north:
+                    self.image = pygame.transform.rotate(self.image, 90)
+                if self.is_south:
+                    self.image = pygame.transform.rotate(self.image, -90)
+                if self.is_east:
+                    self.image = pygame.transform.rotate(self.image, 180)
+                if self.is_west:
+                    self.image = pygame.transform.rotate(self.image, 0)
+
+                self.is_north = False
+                self.is_east = False
+                self.is_west = True
+                self.is_south = False
+
+            # face right
+            if event.key == pygame.K_d:
+                if self.is_north:
+                    self.image = pygame.transform.rotate(self.image, -90)
+                if self.is_south:
+                    self.image = pygame.transform.rotate(self.image, 90)
+                if self.is_east:
+                    self.image = pygame.transform.rotate(self.image, 0)
+                if self.is_west:
+                    self.image = pygame.transform.rotate(self.image, 180)
+
+                self.is_north = False
+                self.is_east = True
+                self.is_west = False
+                self.is_south = False
+
+    # calculate position of mouse, and turn the character towards it
+    def mouse_face(self):
+        # for mouse_face
+
+
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        rel_x, rel_y = mouse_x - self.rect.x, mouse_y - self.rect.y
+        angle = (180 / math.pi) * -math.atan2(rel_y, rel_x)
+
+        self.image = pygame.transform.rotate(self.image, int(angle))
+        #self.rect = self.image.get_rect(center=self.rect.center)
+
+
+    def update(self):
+
+
+        # pos = pygame.mouse.get_pos()
+
+        # place the character at the center of the screen
+        self.rect.x = int(map_width()/2) - int(player_width()/2)
+        self.rect.y = int(map_height()/2) - int(player_height()/2)
+
+        self.key_face()
+        #self.mouse_face()
+
+
 
 
 
@@ -210,9 +262,6 @@ clock = pygame.time.Clock()
 
 running = True
 
-running = True
-
-
 # init sprites
 map_sprite.add(Map(map_img_name))
 player_sprite.add(Player())
@@ -232,7 +281,7 @@ while running:
         map_sprite.draw(screen)
         player_sprite.draw(screen)
 
-        clock.tick(20)
+        clock.tick(60)
 
         map_sprite.update(key_pressed)
         player_sprite.update()
