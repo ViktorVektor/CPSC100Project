@@ -1,3 +1,16 @@
+# Group: 82
+# Course: CPSC 100
+# Lab: L1M
+# Date: 2020 Nov 23
+# Authors:
+#       Elijah Cuico
+#       Viktor Moreno 75388181
+#
+# Title: Sneaky Beaky (the game)
+# Description:
+# A mini game where you sneak around to try and avoid enemies who are searching for you. Enemies will try to guess
+# where the player will go through position, amount of movement, and some algorithms to determine likely positions.
+
 import pygame, math, time, random, os
 # from player.py import Player
 
