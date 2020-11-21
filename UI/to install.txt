@@ -1,0 +1,3 @@
+install pygame
+install python 3.7.0
+notepad can open the python files
