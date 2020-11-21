@@ -10,8 +10,13 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 
-# zoom factor of the map
+# settings
+REFRESH_RATE = 60
 MAP_ZOOM = 2
+FONT = 32
+# movement properties
+# maybe grab difficulty multiplier here?
+PLAYER_SPEED = 1 * 3 # * difficulty
 
 # load map branch
 pygame.init()
@@ -34,7 +39,7 @@ player_img_name = 'survivor-idle_knife_0.png'
 
 # barrier sprites
 # container_1
-container_1_ratio = (2.5, 4.5)
+container_1_ratio = (2, 4)
 container_1 = 'container_1.png'
 
 # current_path = os.path.dirname(__file__)
@@ -73,12 +78,6 @@ pygame.display.set_icon(icon_img)
 
 # window  update
 pygame.display.flip()
-
-
-# movement properties
-# maybe grab difficulty multiplier here?
-player_speed = 1 * 3 # * difficulty
-
 
 # WASD inputs
 KEYS = {pygame.K_w : (0, 1),
@@ -206,7 +205,7 @@ class Barrier(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load(img_name)
         self.image = pygame.transform.scale(self.image, (int(map_width() / (MAP_ZOOM * ratio_xy[0])), int(map_height() / (MAP_ZOOM * ratio_xy[1]))))
-        self.speed = player_speed
+        self.speed = PLAYER_SPEED
 
         self.rect = self.image.get_rect()
         self.current_pos = current_pos
@@ -238,7 +237,7 @@ class Map(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load(img)
         self.rect = self.image.get_rect()
-        self.speed = player_speed
+        self.speed = PLAYER_SPEED
         # self.keys = pygame.key.get_pressed()
 
     def current_pos(self):
@@ -285,17 +284,26 @@ map_sprite.add(map_one)
 player_sprite.add(player_one)
 
 for x in b_one:
-    if x == None:
-        break
-    else:
+    if x != None:
         barrier_sprites.add(x)
 
 
 # game loop
 
 # built in font and font size
-font = pygame.font.Font('freesansbold.ttf', 32)
-text = font.render('screen_width: ' + map_width() + ' ')
+# can turn off these readouts afterwards
+font = pygame.font.Font('freesansbold.ttf', 16)
+
+text_resolution = font.render('width: ' + str(map_width()) + ' eight: ' + str(map_height()), True, GREEN, BLACK)
+text_refresh= font.render('refresh rate: ' + str(REFRESH_RATE), True, GREEN, BLACK)
+text_map_zoom = font.render('map zoom: ' + str(MAP_ZOOM), True, GREEN, BLACK)
+text_player_speed = font.render('player speed: ' + str(PLAYER_SPEED), True, GREEN, BLACK)
+
+# drawing text rect for positioning
+text_rect_1 = text_resolution.get_rect()
+text_rect_2 = text_refresh.get_rect()
+text_rect_3 = text_map_zoom.get_rect()
+text_rect_4 = text_player_speed.get_rect()
 
 while running:
     # draw sprites
@@ -309,6 +317,12 @@ while running:
     map_sprite.update(key_pressed)
     barrier_sprites.update(key_pressed)
 
+    screen.blit(text_resolution, text_rect_1)
+    screen.blit(text_refresh, (text_rect_2.x, text_rect_2.y + 16))
+    screen.blit(text_map_zoom, (text_rect_3.x, text_rect_3.y + 32))
+    screen.blit(text_player_speed, (text_rect_4.x, text_rect_4.y + 48))
+
+    pygame.display.update()
     # event loop
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -316,11 +330,11 @@ while running:
 
         # screen.blit(pygame.image.load(player_img_name), (0, 0))
 
-        clock.tick(60)
+        clock.tick(REFRESH_RATE)
 
         player_sprite.update()
 
-    pygame.display.update()
+
 
 
 
