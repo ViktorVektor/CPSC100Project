@@ -31,11 +31,14 @@ WEST = 3
 
 # settings
 REFRESH_RATE = 60
-MAP_ZOOM = 2
+MAP_ZOOM = 1
 FONT = 32
 # movement properties
 # maybe grab difficulty multiplier here?
 PLAYER_SPEED = 1 * 3 # * difficulty
+
+TRUE = 1
+FALSE = 0
 
 # load map branch
 pygame.init()
@@ -96,10 +99,10 @@ pygame.display.set_icon(icon_img)
 pygame.display.flip()
 
 # WASD inputs
-KEYS = {pygame.K_w: (0, 1),
-        pygame.K_a: (1, 0),
-        pygame.K_s: (0, -1),
-        pygame.K_d: (-1, 0)}
+KEYS = {pygame.K_w: (0, -1),
+        pygame.K_a: (-1, 0),
+        pygame.K_s: (0, 1),
+        pygame.K_d: (1, 0)}
 
 
 # class for player
@@ -109,18 +112,31 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load(img_name)
         self.rect = self.image.get_rect()
-        self.image = pygame.transform.scale(self.image, (int(map_width() / (MAP_ZOOM * 4)), int(map_height() / (MAP_ZOOM * 4))))
+        self.image = pygame.transform.scale(self.image, (int(map_width() / (MAP_ZOOM * 16)), int(map_height() / (MAP_ZOOM * 16))))
         self.rect.width = (int(map_width() / (MAP_ZOOM * 5)))
         self.rect.height = (int(map_height() / (MAP_ZOOM * 4)))
+
+        self.speed = PLAYER_SPEED
+
         # place the character at the center of the screen
-        self.rect.x = int(map_width() / 2) - int(self.player_width() / 2)
-        self.rect.y = int(map_height() / 2) - int(self.player_height() / 2)
+        self.map_center_x = int(map_width() / 2)
+        self.map_center_y = int(map_height() / 2)
+
+        self.rect.x = 0
+        self.rect.y = 0
+
+        self.has_moved = FALSE
+        self.offset_y = 0
+        self.offset_x = 0
 
         # for direction facing
         self.is_north = False
         self.is_east = True
         self.is_west = False
         self.is_south = False
+
+        self.collision_top = False
+        self.collision_sides = False
 
     # returns a number 0 1 2 3 for north south east west
     def facing(self):
@@ -155,7 +171,7 @@ class Player(pygame.sprite.Sprite):
                 self.is_south = False
 
             #face down
-            if event.key == pygame.K_s:
+            elif event.key == pygame.K_s:
                 if self.is_north:
                     self.image = pygame.transform.rotate(self.image, 180)
                 if self.is_south:
@@ -171,7 +187,7 @@ class Player(pygame.sprite.Sprite):
                 self.is_south = True
 
             # face left
-            if event.key == pygame.K_a:
+            elif event.key == pygame.K_a:
                 if self.is_north:
                     self.image = pygame.transform.rotate(self.image, 90)
                 if self.is_south:
@@ -187,7 +203,7 @@ class Player(pygame.sprite.Sprite):
                 self.is_south = False
 
             # face right
-            if event.key == pygame.K_d:
+            elif event.key == pygame.K_d:
                 if self.is_north:
                     self.image = pygame.transform.rotate(self.image, -90)
                 if self.is_south:
@@ -221,9 +237,55 @@ class Player(pygame.sprite.Sprite):
         height = int(self.image.get_rect().size[1] / (map_height() * 2))
         return height
 
-    def update(self):
+    def move(self, keys):
+        # movement
+        dx = 0
+        dy = 0
+
+        Maps = map_sprite
+
+        for x in KEYS:
+            if keys[x]:
+                dx += (KEYS[x][0] * self.speed)
+                dy += (KEYS[x][1] * self.speed)
+
+        for barriers in barrier_sprites:
+            if barriers.has_collided_x():
+                dx = 0
+            if barriers.has_collided_y():
+                dy = 0
+
+            for maps in Maps:
+                if maps.rect.top > self.rect.top:
+                    self.collision_top = True
+                    self.rect.top = maps.rect.top
+                if maps.rect.bottom < self.rect.bottom:
+                    self.collision_top = True
+                    self.rect.bottom = maps.rect.bottom
+                if maps.rect.left > self.rect.left:
+                    self.collision_sides = True
+                    self.rect.left = maps.rect.left
+                if maps.rect.right < self.rect.right:
+                    self.collision_sides = True
+                    self.rect.right = maps.rect.right
+
+        self.rect.x += dx
+        self.rect.y += dy
+
+    #def collision(self):
+    #    barrier_collisions = pygame.sprite.groupcollide(self, barrier_sprites, False, False)
+    #    for barriers in barrier_collisions:
+            #self.rect.x = int(map_width() / 2) - int(self.player_width() / 2)
+    #        self.rect.y += barriers.collision_offset_y()
+    #    self.has_moved = TRUE
+
+
+    def update(self, keys):
         # pos = pygame.mouse.get_pos()
-        pygame.draw.rect(screen, GREEN, (self.rect.x, self.rect.y, self.rect.width, self.rect.height), 0)
+        self.has_moved = FALSE
+        #self.collision()
+        self.move(keys)
+        #pygame.draw.rect(screen, GREEN, (self.rect.x, self.rect.y, self.rect.width, self.rect.height), 0)
         # trying to fix this function, maybe do later if time permits
         # self.mouse_face()
 
@@ -244,72 +306,42 @@ class Barrier(pygame.sprite.Sprite):
         self.rect.width = (int(map_width() / (MAP_ZOOM * ratio_xy[0])))
         self.rect.height = (int(map_height() / (MAP_ZOOM * ratio_xy[1])))
 
+        self.map_center_x = int(map_width() / 2)
+        self.map_center_y = int(map_height() / 2)
+
         self.speed = PLAYER_SPEED
 
         self.current_pos = current_pos
+
         # initial placement at the start of the level
-        self.rect.left = map_current_pos[0] + place_xy[0] * MAP_ZOOM - self.rect.size[0]
-        self.rect.top = map_current_pos[0] + place_xy[1] * MAP_ZOOM - self.rect.size[1]
+        self.rect.left = current_pos[0] + place_xy[0] * MAP_ZOOM - self.rect.size[0]
+        self.rect.top = current_pos[0] + place_xy[1] * MAP_ZOOM - self.rect.size[1]
 
         # for barrier collisions
         self.players = player_sprite
 
-        self.collision = False
+        self.collision_x = False
+        self.collision_y = False
+        self.offset_y = 0
 
     # for outside reference
-    def has_collided(self):
-        return self.collision
+    def has_collided_x(self):
+        return self.collision_x
 
-    def move(self, keys):
-        # movement and collision
+    def has_collided_y(self):
+        return self.collision_y
 
-        no_keys = {pygame.K_w: (0, 0),
-                    pygame.K_a: (0, 0),
-                    pygame.K_s: (0, 0),
-                    pygame.K_d: (0, 0)}
-
-        # if the key being pressed is in the array of KEYS
-        dx = 0
-        dy = 0
-
-        for x in KEYS:
-            if keys[x]:
-                dx += (KEYS[x][0] * self.speed)
-                dy += (KEYS[x][1] * self.speed)
-
-        player_collisions = pygame.sprite.groupcollide(barrier_sprites, self.players, False, False)
-
-        for players in player_collisions:
-            # if the player top goes into the barrier bottom with a 3 pixel padding
-            if players.rect.top < (self.rect.bottom + 3) and players.rect.bottom < (self.rect.top - 3):
-                self.collision = True
-                self.rect.y -= 3
-
-                if players.rect.bottom > (self.rect.top - 3):
-                    self.collision = True
-                    self.rect.y += 3
-                else:
-                    self.rect.y += 3
-            else:
-                self.rect.y -= 3
-
-
-        for maps in map_sprite:
-            if maps.has_collided():
-                dx = 0
-                dy = 0
-
-        self.rect.x += dx
-        self.rect.y += dy
-
+    def collision_offset_y(self):
+        return self.offset_y
 
     def update(self, keys):
         # refreshed placement as the player moves
         #self.rect.x = self.current_pos[0] + self.rect.x
         #self.rect.y = self.current_pos[1] + self.rect.y
         pygame.draw.rect(screen, RED, (self.rect.x, self.rect.y, self.rect.width, self.rect.height), 0)
-        self.collision = False
-        self.move(keys)
+        self.collision_x = False
+        self.collision_y = False
+        self.move(keys, self.current_pos)
 
 
 
@@ -328,79 +360,23 @@ class Map(pygame.sprite.Sprite):
         # for barrier collisions from player
         # self.barriers = player_sprite
 
-        self.collision = False
+        self.collision_top = False
+        self.collision_sides = False
 
     def current_pos(self):
         current_pos = (self.rect.x, self.rect.y)
         return current_pos
 
-    def has_collided(self):
-        return self.collision
+    def has_collided_top(self):
+        return self.collision_top
 
-    def move(self, keys):
-        # movement
-        dx = 0
-        dy = 0
-
-        Players = player_sprite
-
-        for x in KEYS:
-            if keys[x]:
-                dx += (KEYS[x][0] * self.speed)
-                dy += (KEYS[x][1] * self.speed)
-
-            for player in Players:
-                if player.rect.top < self.rect.top:
-                    self.collision = True
-                    self.rect.top = player.rect.top
-                if player.rect.bottom > self.rect.bottom:
-                    self.collision = True
-                    self.rect.bottom = player.rect.bottom
-                if player.rect.left < self.rect.left:
-                    self.collision = True
-                    self.rect.left = player.rect.left
-                if player.rect.right > self.rect.right:
-                    self.collision = True
-                    self.rect.right = player.rect.right
-        for barriers in barrier_sprites:
-            if barriers.has_collided():
-                dx = 0
-                dy = 0
-
-        self.rect.x += dx
-        self.rect.y += dy
-
-        # weird movement stop solution but I don't have time :/
-
-        # if the key being pressed is in the array of KEYS
-        #for key in KEYS:
-        #    if keys[key]:
-        #        self.rect.y += KEYS[key][1] * self.speed
-
-        #for x in player_collisions:
-
-            # right of character colliding with bottom of barrier, stop the movement of the map underneath
-            # by subtracting the corresponding key direction
-        #    if player_one.barrier_top() or player_one.barrier_bottom():
-        #        if keys[key]:
-        #            self.rect.y = self.temp_y
-
-        #for key in KEYS:
-        #    if keys[key]:
-        #        self.rect.x += KEYS[key][0] * self.speed
-
-        #for x in player_collisions:
-        #    # left or right of character colliding with bottom of barrier, stop the movement of the map underneath
-        #    # by subtracting the corresponding key direction
-        #    if player_one.barrier_left() or player_one.barrier_right():
-        #        if keys[key]:
-        #            self.rect.x = self.temp_x
-
-    # self.rect.clamp_ip(map_img.get_rect())  # Keep player on screen.
+    def has_collided_sides(self):
+        return self.collision_sides
 
     def update(self, keys):
-        self.collision = False
-        self.move(keys)
+        self.collision_top = False
+        self.collision_sides = False
+        # self.move(keys)
         #self.temp_x = self.rect.x
         #self.temp_y = self.rect.y
 
@@ -444,7 +420,7 @@ text_resolution = font.render('width: ' + str(map_width()) + ' eight: ' + str(ma
 text_refresh= font.render('refresh rate: ' + str(REFRESH_RATE), True, GREEN, BLACK)
 text_map_zoom = font.render('map zoom: ' + str(MAP_ZOOM), True, GREEN, BLACK)
 text_player_speed = font.render('player speed: ' + str(PLAYER_SPEED), True, GREEN, BLACK)
-text_collision = font.render(' Not Touching !', True, RED, BLACK)
+#text_collision = font.render(' offset y: ' + str(barrier_sprites[0].collision_offset_y()), True, GREEN, BLACK)
 
 
 # drawing text rect for positioning
@@ -460,13 +436,14 @@ while running:
 
     map_sprite.draw(screen)
     player_sprite.draw(screen)
-    barrier_sprites.draw(screen)
+    #barrier_sprites.draw(screen)
 
     key_pressed = pygame.key.get_pressed()
 
     # where the actual movement is, should be outside of the event loop
+    #barrier_sprites.update(key_pressed)
     map_sprite.update(key_pressed)
-    barrier_sprites.update(key_pressed)
+
 
     screen.blit(text_resolution, text_rect_1)
     screen.blit(text_refresh, (text_rect_2.x, text_rect_2.y + 16))
@@ -479,23 +456,26 @@ while running:
         #text_collision = font.render(' Not Touching !', True, RED, BLACK)
 
     #screen.blit(text_collision, (text_rect_5.x, text_rect_5.y + 64))
-
+    player_sprite.update(key_pressed)
     pygame.display.update()
     # event loop
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-        map_sprite.update(key_pressed)
+        #map_sprite.update(key_pressed)
 
         # screen.blit(pygame.image.load(player_img_name), (0, 0))
 
         clock.tick(REFRESH_RATE)
+
+
         for players in player_sprite:
             players.key_face()
-            players.update()
-            barrier_sprites.update(key_pressed)
 
-        pygame.display.update()
+            #barrier_sprites.update(key_pressed)
+            #map_sprite.update(key_pressed)
+
+        #pygame.display.update()
 
 
