@@ -53,7 +53,7 @@ map_img_name = 'Map_Final.png'
 # grab the player image from the main menu
 # from main_menu import player_img_name
 
-character_ratio = (32, 32)
+character_ratio = (28, 28)
 player_img_name = 'survivor-idle_knife_0.png'
 
 enemy_img_name = 'skeleton_idle_6.png'
@@ -67,15 +67,10 @@ container_3 = 'container_3.png'
 box_ratio = (28, 24)
 box_1 = 'wood_box_1.png'
 
-# current_path = os.path.dirname(__file__)
-# resource_path = os.path.join(current_path, 'resources')
-# image_path = os.path.join(resource_path, 'images')
-
 map_img = pygame.image.load(map_img_name)
 
 
 # these are to be used for scaling things later
-
 def map_width():
     width = int(map_img.get_rect().size[0])
     return width
@@ -88,7 +83,6 @@ def map_height():
 
 # window set up
 # draw a screen to be the size of the map
-
 screen = pygame.display.set_mode((map_width(), map_height()))
 
 screen.fill(GRAY)
@@ -125,11 +119,10 @@ class Player(pygame.sprite.Sprite):
         self.rect.width = int(map_width() / (MAP_ZOOM * character_ratio[0]))
         self.rect.height = int(map_height() / (MAP_ZOOM * character_ratio[0]))
 
-        self.speed = PLAYER_SPEED / 50
+        self.rect.x = 75
+        self.rect.y = 75
 
-        # place the character at the center of the screen
-        # self.map_center_x = int(map_width() / 2)
-        # self.map_center_y = int(map_height() / 2)
+        self.speed = PLAYER_SPEED / 50
 
         # for direction facing
         self.is_north = False
@@ -222,17 +215,6 @@ class Player(pygame.sprite.Sprite):
                 self.is_west = False
                 self.is_south = False
 
-    # calculate position of mouse, and turn the character towards it
-    def mouse_face(self):
-        # for mouse_face
-        mouse_x, mouse_y = pygame.mouse.get_pos()
-        rel_x, rel_y = mouse_x - self.rect.x, mouse_y - self.rect.y
-        angle = (180 / math.pi) * -math.atan2(rel_y, rel_x)
-
-        self.image = pygame.transform.rotate(self.image, int(angle))
-        # an attempt to keep the character in the middle of the screen
-        # self.rect = self.image.get_rect(center=self.rect.center)
-
     def player_width(self):
         width = int(self.image.get_rect().size[0] / (map_width() * 2))
         return width
@@ -271,7 +253,6 @@ class Player(pygame.sprite.Sprite):
             elif dy > 0:
                 self.rect.bottom = barrier.rect.top - padding
 
-
         for maps in Maps:
             if maps.rect.top > self.rect.top:
                 self.collision_top = True
@@ -308,9 +289,9 @@ class Player(pygame.sprite.Sprite):
 
     def update(self, keys):
         self.move(keys)
-        #pygame.draw.rect(screen, GREEN, (self.rect.x, self.rect.y, self.rect.width, self.rect.height), 0)
-        # trying to fix this function, maybe do later if time permits
-        # self.mouse_face()
+        # uncomment for hit box
+        # pygame.draw.rect(screen, GREEN, (self.rect.x, self.rect.y, self.rect.width, self.rect.height), 0)
+
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, img_name):
@@ -364,7 +345,6 @@ class Enemy(pygame.sprite.Sprite):
         barrier_collision_list = pygame.sprite.spritecollide(self, barrier_sprites, False)
 
         for barrier in barrier_collision_list:
-
             # left side touching right side of barrier
             if self.dx < 0:
                 # if encountered, move laterally
@@ -475,11 +455,6 @@ class Coins(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
 
-        #self.mouse_pos = pygame.mouse.get_pos()
-        #random.seed(self.mouse_pos[0])
-        #self.random_x = random.randint(0, map_width())
-        #self.random_y = random.randint(100, map_height())
-        # self.amount = amount
         self.image = pygame.Surface((20, 20))
         self.image.fill(YELLOW)
         self.rect = self.image.get_rect()
@@ -488,8 +463,6 @@ class Coins(pygame.sprite.Sprite):
         self.rect.y = y
 
     def barrier(self):
-        padding = 2
-
         barrier_collision_list = pygame.sprite.spritecollide(self, barrier_sprites, False)
 
         for barrier in barrier_collision_list:
@@ -509,8 +482,6 @@ class Coins(pygame.sprite.Sprite):
 
     def update(self):
         self.barrier()
-
-
 
 
 # Class for any barrier elements, (walls, boxes, containers, etc)
@@ -547,7 +518,7 @@ class Map(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load(img)
         # for the zoomed in map
-        #self.image = pygame.transform.scale(self.image, (int(map_width() * MAP_ZOOM), int(map_height() * MAP_ZOOM)))
+        # self.image = pygame.transform.scale(self.image, (int(map_width() * MAP_ZOOM), int(map_height() * MAP_ZOOM)))
         self.rect = self.image.get_rect()
 
     def current_pos(self):
@@ -567,114 +538,22 @@ barrier_sprites = pygame.sprite.Group()
 enemy_sprites = pygame.sprite.Group()
 coin_sprites = pygame.sprite.Group()
 
-# giving class Player the list of barriers to use in collision check
-player_sprite.barriers = barrier_sprites
-
-# init sprites
-map_one = Map(map_img_name)
-map_current_pos = map_one.current_pos()
-player_one = Player(player_img_name)
-enemy_one = Enemy(enemy_img_name)
-
-random.seed(pygame.mouse.get_pos()[0])
-random_x = 0
-random_y = 0
-
-x = 0
-
-while x < 20:
-    random_x = random.randint(0, map_width())
-    random_y = random.randint(100, map_height())
-    coins = Coins(random_x, random_y)
-    coin_sprites.add(coins)
-    x += 1
-
-# add sprites
-map_sprite.add(map_one)
-player_sprite.add(player_one)
-
-x = 0
-
-# init enemy list
-enemy_sprites.add(enemy_one)
-
-# init barrier list
-# containers
-barrier_sprites.add(Barrier(container_1,  (385, 130), container_ratio))
-barrier_sprites.add(Barrier(container_1,  (385, 210), container_ratio))
-barrier_sprites.add(Barrier(container_3,  (385, 297), container_ratio))
-
-# building 1
-barrier_sprites.add(Barrier(box_1, (180, 375), box_ratio))
-barrier_sprites.add(Barrier(box_1, (220, 375), box_ratio))
-barrier_sprites.add(Barrier(box_1,  (230, 455), box_ratio))
-barrier_sprites.add(Barrier(box_1,  (270, 455), box_ratio))
-barrier_sprites.add(Barrier(box_1,  (270, 495), box_ratio))
-barrier_sprites.add(Barrier(box_1,  (270, 565), box_ratio))
-barrier_sprites.add(Barrier(box_1,  (220, 525), box_ratio))
-barrier_sprites.add(Barrier(box_1,  (230, 605), box_ratio))
-barrier_sprites.add(Barrier(box_1,  (270, 605), box_ratio))
-barrier_sprites.add(Barrier(box_1,  (180, 605), box_ratio))
-
-# building 2
-barrier_sprites.add(Barrier(box_1,  (425, 467), box_ratio))# right column
-barrier_sprites.add(Barrier(box_1,  (425, 500), box_ratio))
-barrier_sprites.add(Barrier(box_1,  (425, 530), box_ratio))
-
-barrier_sprites.add(Barrier(box_1,  (390, 467), box_ratio))# left column
-barrier_sprites.add(Barrier(box_1,  (390, 500), box_ratio))
-barrier_sprites.add(Barrier(box_1,  (390, 530), box_ratio))
-
-barrier_sprites.add(Barrier(box_1,  (485, 585), box_ratio))
-
-barrier_sprites.add(Barrier(box_1,  (525, 515), box_ratio))
-barrier_sprites.add(Barrier(box_1,  (560, 515), box_ratio))
-barrier_sprites.add(Barrier(box_1,  (560, 550), box_ratio))
-
-barrier_sprites.add(Barrier(box_1,  (615, 515), box_ratio))
-barrier_sprites.add(Barrier(box_1,  (615, 480), box_ratio))
-
-barrier_sprites.add(Barrier(box_1,  (615, 480), box_ratio))
-
-barrier_sprites.add(Barrier(box_1,  (735, 465), box_ratio))
-
-barrier_sprites.add(Barrier(box_1,  (735, 570), box_ratio))
-barrier_sprites.add(Barrier(box_1,  (735, 605), box_ratio))
-barrier_sprites.add(Barrier(box_1,  (700, 605), box_ratio))
-
-# building 3
-barrier_sprites.add(Barrier(box_1,  (770, 115), box_ratio))
-barrier_sprites.add(Barrier(box_1,  (805, 115), box_ratio))
-
-barrier_sprites.add(Barrier(box_1,  (770, 185), box_ratio))
-
-barrier_sprites.add(Barrier(box_1,  (770, 290), box_ratio))
-barrier_sprites.add(Barrier(box_1,  (770, 325), box_ratio))
-barrier_sprites.add(Barrier(box_1,  (805, 290), box_ratio))
-barrier_sprites.add(Barrier(box_1,  (805, 255), box_ratio))
-
-barrier_sprites.add(Barrier(box_1,  (860, 215), box_ratio))
-barrier_sprites.add(Barrier(box_1,  (860, 355), box_ratio))
-
-
 # main game functions
 def menu():
     menu = True
 
     font = pygame.font.Font('freesansbold.ttf', 32)
 
+    # text stuffs
     title = font.render('Welcome to Sneaky Beaky (the game)', True, BLACK, WHITE)
     how_to = font.render('Press any key to start!', True, RED, WHITE)
     how_to_2 = font.render('CPSC 100 Lab Section L1M', True, RED, WHITE)
 
-    made_by = font.render('Made by:', True, BLUE, WHITE)
+    made_by = font.render('Made by Group 82:', True, BLUE, WHITE)
     name_1 = font.render('Elijah Cuico 21233069', True, BLUE, WHITE)
     name_2 = font.render('Viktor Moreno 75388181', True, BLUE, WHITE)
     title_rect = title.get_rect()
     how_to_rect = how_to.get_rect()
-    # drawing the text box for the title
-
-
 
     while menu:
 
@@ -686,7 +565,7 @@ def menu():
         screen.blit(name_1, (int(map_height() / 2) - int(title_rect.width / 2), 440))
         screen.blit(name_2, (int(map_height() / 2) - int(title_rect.width / 2), 510))
 
-        #pygame.display.flip()
+        pygame.display.flip()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -700,11 +579,104 @@ def menu():
 
 # loads Map_Final
 def default_game():
+    map_sprite.empty()
+    player_sprite.empty()
+    barrier_sprites.empty()
+    enemy_sprites.empty()
+    coin_sprites.empty()
+
+    pygame.display.flip()
+
+    # giving class Player the list of barriers to use in collision check
+    player_sprite.barriers = barrier_sprites
+
+    # init sprites
+    map_one = Map(map_img_name)
+    player_one = Player(player_img_name)
+    enemy_one = Enemy(enemy_img_name)
+
+    random.seed(pygame.mouse.get_pos()[0])
+
+    x = 0
+
+    # change this for number of coins
+    while x < 20:
+        random_x = random.randint(0, map_width())
+        random_y = random.randint(100, map_height())
+        coins = Coins(random_x, random_y)
+        coin_sprites.add(coins)
+        x += 1
+
+    # add sprites
+    map_sprite.add(map_one)
+    player_sprite.add(player_one)
+
+    x = 0
+
+    # init enemy list
+    enemy_sprites.add(enemy_one)
+
+    # init barrier list
+    # containers
+    barrier_sprites.add(Barrier(container_1, (385, 130), container_ratio))
+    barrier_sprites.add(Barrier(container_1, (385, 210), container_ratio))
+    barrier_sprites.add(Barrier(container_3, (385, 297), container_ratio))
+
+    # building 1
+    barrier_sprites.add(Barrier(box_1, (180, 375), box_ratio))
+    barrier_sprites.add(Barrier(box_1, (220, 375), box_ratio))
+    barrier_sprites.add(Barrier(box_1, (230, 455), box_ratio))
+    barrier_sprites.add(Barrier(box_1, (270, 455), box_ratio))
+    barrier_sprites.add(Barrier(box_1, (270, 495), box_ratio))
+    barrier_sprites.add(Barrier(box_1, (270, 565), box_ratio))
+    barrier_sprites.add(Barrier(box_1, (220, 525), box_ratio))
+    barrier_sprites.add(Barrier(box_1, (230, 605), box_ratio))
+    barrier_sprites.add(Barrier(box_1, (270, 605), box_ratio))
+    barrier_sprites.add(Barrier(box_1, (180, 605), box_ratio))
+
+    # building 2
+    barrier_sprites.add(Barrier(box_1, (425, 467), box_ratio))  # right column
+    barrier_sprites.add(Barrier(box_1, (425, 500), box_ratio))
+    barrier_sprites.add(Barrier(box_1, (425, 530), box_ratio))
+
+    barrier_sprites.add(Barrier(box_1, (390, 467), box_ratio))  # left column
+    barrier_sprites.add(Barrier(box_1, (390, 500), box_ratio))
+    barrier_sprites.add(Barrier(box_1, (390, 530), box_ratio))
+
+    barrier_sprites.add(Barrier(box_1, (485, 585), box_ratio))
+
+    barrier_sprites.add(Barrier(box_1, (525, 515), box_ratio))
+    barrier_sprites.add(Barrier(box_1, (560, 515), box_ratio))
+    barrier_sprites.add(Barrier(box_1, (560, 550), box_ratio))
+
+    barrier_sprites.add(Barrier(box_1, (615, 515), box_ratio))
+    barrier_sprites.add(Barrier(box_1, (615, 480), box_ratio))
+
+    barrier_sprites.add(Barrier(box_1, (615, 480), box_ratio))
+
+    barrier_sprites.add(Barrier(box_1, (735, 465), box_ratio))
+
+    barrier_sprites.add(Barrier(box_1, (735, 570), box_ratio))
+    barrier_sprites.add(Barrier(box_1, (735, 605), box_ratio))
+    barrier_sprites.add(Barrier(box_1, (700, 605), box_ratio))
+
+    # building 3
+    barrier_sprites.add(Barrier(box_1, (770, 115), box_ratio))
+    barrier_sprites.add(Barrier(box_1, (805, 115), box_ratio))
+
+    barrier_sprites.add(Barrier(box_1, (770, 185), box_ratio))
+
+    barrier_sprites.add(Barrier(box_1, (770, 290), box_ratio))
+    barrier_sprites.add(Barrier(box_1, (770, 325), box_ratio))
+    barrier_sprites.add(Barrier(box_1, (805, 290), box_ratio))
+    barrier_sprites.add(Barrier(box_1, (805, 255), box_ratio))
+
+    barrier_sprites.add(Barrier(box_1, (860, 215), box_ratio))
+    barrier_sprites.add(Barrier(box_1, (860, 355), box_ratio))
+
     running = True
     TOTAL_SCORE = 0
     TIME_START = time.time()
-    dt = 1
-    TIME_CURR = 0
 
     # built in font and font size
     # can turn off these readouts afterwards
@@ -795,15 +767,14 @@ def default_game():
     while running:
 
 
-
         font = pygame.font.Font('freesansbold.ttf', 32)
 
         pygame.display.update()
 
         game_over = font.render('GAME OVER', True, RED, WHITE)
         final_score = font.render('Score: ' + str(int(TOTAL_SCORE)), True, RED, WHITE)
-        how_to_2 = font.render('Press Enter for the Procedural Level!', True, RED, WHITE)
-        made_by = font.render('Made by:', True, BLUE, WHITE)
+        how_to_2 = font.render('P for procedural game, Enter for default game', True, RED, WHITE)
+        made_by = font.render('Made by Group 82:', True, BLUE, WHITE)
         name_1 = font.render('Elijah Cuico 21233069', True, BLUE, WHITE)
         name_2 = font.render('Viktor Moreno 75388181', True, BLUE, WHITE)
 
@@ -811,7 +782,7 @@ def default_game():
 
         screen.blit(game_over, (int(map_height() / 2) - int(game_over_rect.width / 2) + 140, 100))
         screen.blit(final_score, (int(map_height() / 2) - int(game_over_rect.width / 2) + 140, 200))
-        screen.blit(how_to_2, (int(map_height() / 2) - int(game_over_rect.width / 2), 300))
+        screen.blit(how_to_2, (int(map_height() / 2) - int(game_over_rect.width / 2) - 100, 300))
         screen.blit(made_by, (int(map_height() / 2) - int(game_over_rect.width / 2), 370))
         screen.blit(name_1, (int(map_height() / 2) - int(game_over_rect.width / 2), 440))
         screen.blit(name_2, (int(map_height() / 2) - int(game_over_rect.width / 2), 510))
@@ -821,10 +792,15 @@ def default_game():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            if event.type == pygame.KEYDOWN:
+            elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
+                    pygame.display.flip()
                     procedural_game()
                     running = False
+                if event.key == pygame.K_RETURN:
+                    pygame.display.flip()
+                    default_game()
+                    running == False
 
 # level init
 new_clock = pygame.time.Clock()
@@ -836,6 +812,8 @@ def procedural_game():
     enemy_sprites.empty()
     coin_sprites.empty()
 
+    pygame.display.flip()
+
     # init sprites
     map_final = Map(map_img_name)
     player_one = Player(player_img_name)
@@ -846,11 +824,10 @@ def procedural_game():
     enemy_sprites.add(enemy_one)
 
     random.seed(pygame.mouse.get_pos()[0])
-    random_x = 0
-    random_y = 0
 
     x = 0
 
+    # change this for number of coins
     while x < 20:
         random_x = random.randint(0, map_width())
         random_y = random.randint(100, map_height())
@@ -859,9 +836,7 @@ def procedural_game():
         x += 1
 
     x = 0
-
-    x = 0
-
+    # change this for number of boxes
     while x < 30:
         random_x = random.randint(0, map_width())
         random_y = random.randint(100, map_height())
@@ -869,21 +844,10 @@ def procedural_game():
         barrier_sprites.add(random_box)
         x += 1
 
-    x = 0
-
-    while x < 20:
-        random_x = random.randint(0, map_width())
-        random_y = random.randint(100, map_height())
-        coins = Coins(random_x, random_y)
-        coin_sprites.add(coins)
-        x += 1
-
     pygame.display
     running = True
     TOTAL_SCORE = 0
     TIME_START = time.time()
-    dt = 1
-    TIME_CURR = 0
 
     # built in font and font size
     # can turn off these readouts afterwards
@@ -981,7 +945,7 @@ def procedural_game():
         final_score = font.render('Score: ' + str(int(TOTAL_SCORE)), True, RED, WHITE)
         how_to_2 = font.render('Thanks for playing!', True, RED, WHITE)
         play_again = font.render('P for procedural game, Enter for default game', True, RED, WHITE)
-        made_by = font.render('Made by:', True, BLUE, WHITE)
+        made_by = font.render('Made by Group 82:', True, BLUE, WHITE)
         name_1 = font.render('Elijah Cuico 21233069', True, BLUE, WHITE)
         name_2 = font.render('Viktor Moreno 75388181', True, BLUE, WHITE)
 
@@ -990,7 +954,7 @@ def procedural_game():
 
         screen.blit(game_over, (int(map_height() / 2) - int(game_over_rect.width / 2) + 140, 100))
         screen.blit(final_score, (int(map_height() / 2) - int(game_over_rect.width / 2) + 140, 200))
-        screen.blit(how_to_2, (int(map_height() / 2) - int(game_over_rect.width / 2), 250))
+        screen.blit(how_to_2, (int(map_height() / 2) - int(game_over_rect.width / 2) + 90, 250))
         screen.blit(play_again, (int(map_height() / 2) - int(play_again_rect.width / 2) + 140, 300))
         screen.blit(made_by, (int(map_height() / 2) - int(game_over_rect.width / 2), 370))
         screen.blit(name_1, (int(map_height() / 2) - int(game_over_rect.width / 2), 440))
@@ -1001,13 +965,15 @@ def procedural_game():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            if event.type == pygame.KEYDOWN:
+            elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
+                    pygame.display.flip()
                     procedural_game()
                     running = False
                 if event.key == pygame.K_RETURN:
+                    pygame.display.flip()
                     default_game()
-                    running == False
+                    running = False
 
 
 # game activation
