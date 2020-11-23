@@ -235,10 +235,6 @@ class Player(pygame.sprite.Sprite):
         for x in KEYS:
             if keys[x]:
                 dx += (KEYS[x][0] * self.speed)
-        # y direction
-        for x in KEYS:
-            if keys[x]:
-                dy += (KEYS[x][1] * self.speed)
 
         barrier_collision_list = pygame.sprite.spritecollide(self, barrier_sprites, False)
 
@@ -248,7 +244,13 @@ class Player(pygame.sprite.Sprite):
                 self.rect.left = barrier.rect.right + padding
             elif dx > 0:
                 self.rect.right = barrier.rect.left - padding
-            elif dy < 0:
+        # y direction
+        for x in KEYS:
+            if keys[x]:
+                dy += (KEYS[x][1] * self.speed)
+
+        for barrier in barrier_collision_list:
+            if dy < 0:
                 self.rect.top = barrier.rect.bottom + padding
             elif dy > 0:
                 self.rect.bottom = barrier.rect.top - padding
