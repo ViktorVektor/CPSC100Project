@@ -294,7 +294,7 @@ class Player(pygame.sprite.Sprite):
 
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, img_name):
+    def __init__(self, img_name, spawn_x, spawn_y):
         super().__init__()
         self.image = pygame.image.load(img_name)
         self.rect = self.image.get_rect()
@@ -317,8 +317,8 @@ class Enemy(pygame.sprite.Sprite):
         self.dx = 0
         self.dy = 0
 
-        self.rect.x = int(map_width() / 2)
-        self.rect.y = int(map_height() /2)
+        self.rect.x = spawn_x
+        self.rect.y = spawn_y
 
     # moves to the player's position
     def moveto(self, player_pos):
@@ -540,13 +540,13 @@ coin_sprites = pygame.sprite.Group()
 
 # main game functions
 def menu():
-    menu = True
+
 
     font = pygame.font.Font('freesansbold.ttf', 32)
 
     # text stuffs
     title = font.render('Welcome to Sneaky Beaky (the game)', True, BLACK, WHITE)
-    how_to = font.render('Press any key to start!', True, RED, WHITE)
+    how_to = font.render('\'P\'for procedural game, \'Enter\' for default game', True, RED, WHITE)
     how_to_2 = font.render('CPSC 100 Lab Section L1M', True, RED, WHITE)
 
     made_by = font.render('Made by Group 82:', True, BLUE, WHITE)
@@ -554,8 +554,9 @@ def menu():
     name_2 = font.render('Viktor Moreno 75388181', True, BLUE, WHITE)
     title_rect = title.get_rect()
     how_to_rect = how_to.get_rect()
+    running = True
 
-    while menu:
+    while running:
 
         screen.fill(GRAY)
         screen.blit(title, (int(map_height() / 2) - int(title_rect.width/2) + 140, 100))
@@ -569,9 +570,19 @@ def menu():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                menu = False
+                running = False
             if event.type == pygame.KEYDOWN:
-                menu = False
+                if event.key == pygame.K_p:
+                    pygame.display.flip()
+                    procedural_game()
+                    running = False
+                if event.key == pygame.K_RETURN:
+                    pygame.display.flip()
+                    default_game()
+                    running = False
+                if event.key == pygame.K_ESCAPE:
+                    pygame.display.flip()
+                    running = False
 
         pygame.display.update()
 
@@ -593,9 +604,9 @@ def default_game():
     # init sprites
     map_one = Map(map_img_name)
     player_one = Player(player_img_name)
-    enemy_one = Enemy(enemy_img_name)
+    enemy_one = Enemy(enemy_img_name, int(map_width() /2), int(map_height() /2))
 
-    random.seed(pygame.mouse.get_pos()[0])
+    random.seed(time.time())
 
     x = 0
 
@@ -715,6 +726,9 @@ def default_game():
             if len(player_sprite.sprites()) == 0:
                 TOTAL_SCORE = SCORE
                 running = False
+            if len(coin_sprites.sprites()) == 0:
+                TOTAL_SCORE = SCORE
+                running = False
 
 
         # draw sprites
@@ -751,6 +765,10 @@ def default_game():
             if event.type == pygame.QUIT:
                 TOTAL_SCORE = SCORE
                 running = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    pygame.display.flip()
+                    running = False
 
             clock.tick(REFRESH_RATE)
             player_sprite.update(key_pressed)
@@ -773,7 +791,7 @@ def default_game():
 
         game_over = font.render('GAME OVER', True, RED, WHITE)
         final_score = font.render('Score: ' + str(int(TOTAL_SCORE)), True, RED, WHITE)
-        how_to_2 = font.render('P for procedural game, Enter for default game', True, RED, WHITE)
+        how_to_2 = font.render('\'P\'for procedural game, \'Enter\' for default game', True, RED, WHITE)
         made_by = font.render('Made by Group 82:', True, BLUE, WHITE)
         name_1 = font.render('Elijah Cuico 21233069', True, BLUE, WHITE)
         name_2 = font.render('Viktor Moreno 75388181', True, BLUE, WHITE)
@@ -792,7 +810,7 @@ def default_game():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            elif event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
                     pygame.display.flip()
                     procedural_game()
@@ -801,6 +819,10 @@ def default_game():
                     pygame.display.flip()
                     default_game()
                     running == False
+                if event.key == pygame.K_ESCAPE:
+                    TOTAL_SCORE = SCORE
+                    pygame.display.flip()
+                    running = False
 
 # level init
 new_clock = pygame.time.Clock()
@@ -817,13 +839,11 @@ def procedural_game():
     # init sprites
     map_final = Map(map_img_name)
     player_one = Player(player_img_name)
-    enemy_one = Enemy(enemy_img_name)
 
     map_sprite.add(map_final)
     player_sprite.add(player_one)
-    enemy_sprites.add(enemy_one)
 
-    random.seed(pygame.mouse.get_pos()[0])
+    random.seed(time.time())
 
     x = 0
 
@@ -837,11 +857,42 @@ def procedural_game():
 
     x = 0
     # change this for number of boxes
-    while x < 30:
+    while x < 20:
         random_x = random.randint(0, map_width())
         random_y = random.randint(100, map_height())
+
         random_box = Barrier(box_1, (random_x, random_y), box_ratio)
+        random_box_2 = Barrier(box_1, (random_x, random_y), box_ratio)
+        random_box_3 = Barrier(box_1, (random_x, random_y), box_ratio)
+
+        # L shape
+        if random_x % 3 == 0:
+            random_box = Barrier(box_1, (random_x, random_y), box_ratio)
+            random_box_2 = Barrier(box_1, (random_x, random_y + 30), box_ratio)
+            random_box_3 = Barrier(box_1, (random_x - 30, random_y), box_ratio)
+        # v shape
+        elif random_x % 6 == 0:
+            random_box = Barrier(box_1, (random_x, random_y), box_ratio)
+            random_box_2 = Barrier(box_1, (random_x -30, random_y - 30), box_ratio)
+            random_box_3 = Barrier(box_1, (random_x + 30, random_y - 30), box_ratio)
+        # line shape
+        elif random_y % 2 == 0:
+            random_box = Barrier(box_1, (random_x, random_y), box_ratio)
+            random_box_2 = Barrier(box_1, (random_x, random_y + 30), box_ratio)
+            random_box_3 = Barrier(box_1, (random_x , random_y- 30), box_ratio)
+
         barrier_sprites.add(random_box)
+        barrier_sprites.add(random_box_2)
+        barrier_sprites.add(random_box_3)
+        x += 1
+
+    x = 0
+    # Multiple enemies at random spots
+    while x < 5:
+        random_x = random.randint(0, map_width())
+        random_y = random.randint(100, map_height())
+        enemy_one = Enemy(enemy_img_name, random_x, random_y)
+        enemy_sprites.add(enemy_one)
         x += 1
 
     pygame.display
@@ -886,6 +937,9 @@ def procedural_game():
             if len(player_sprite.sprites()) == 0:
                 TOTAL_SCORE = SCORE
                 running = False
+            if len(coin_sprites.sprites()) == 0:
+                TOTAL_SCORE = SCORE
+                running = False
 
         # draw sprites
         map_sprite.draw(screen)
@@ -907,6 +961,7 @@ def procedural_game():
         key_pressed = pygame.key.get_pressed()
 
         # where the actual movement is, should be outside of the event loop
+        # old code for the inversed mode, didn't work out so well
         # barrier_sprites.update(key_pressed)
         # map_sprite.update(key_pressed)
 
@@ -921,6 +976,11 @@ def procedural_game():
             if event.type == pygame.QUIT:
                 TOTAL_SCORE = SCORE
                 running = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    TOTAL_SCORE = SCORE
+                    pygame.display.flip()
+                    running = False
 
             clock.tick(REFRESH_RATE)
             player_sprite.update(key_pressed)
@@ -944,7 +1004,7 @@ def procedural_game():
         game_over = font.render('GAME OVER', True, RED, WHITE)
         final_score = font.render('Score: ' + str(int(TOTAL_SCORE)), True, RED, WHITE)
         how_to_2 = font.render('Thanks for playing!', True, RED, WHITE)
-        play_again = font.render('P for procedural game, Enter for default game', True, RED, WHITE)
+        play_again = font.render('\'P\'for procedural game, \'Enter\' for default game', True, RED, WHITE)
         made_by = font.render('Made by Group 82:', True, BLUE, WHITE)
         name_1 = font.render('Elijah Cuico 21233069', True, BLUE, WHITE)
         name_2 = font.render('Viktor Moreno 75388181', True, BLUE, WHITE)
@@ -965,7 +1025,7 @@ def procedural_game():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            elif event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
                     pygame.display.flip()
                     procedural_game()
@@ -974,9 +1034,11 @@ def procedural_game():
                     pygame.display.flip()
                     default_game()
                     running = False
+                if event.key == pygame.K_ESCAPE:
+                    pygame.display.flip()
+                    running = False
 
 
 # game activation
 menu()
-default_game()
 pygame.quit()
